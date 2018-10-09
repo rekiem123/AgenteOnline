@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Agente Online</string>
+    <string name="title_activity_registros">Registros Activity</string>
+    <string name="title_activity_nuevos_registros">Nuevo Registro</string>
+</resources>

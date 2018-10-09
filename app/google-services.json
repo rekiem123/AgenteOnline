@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "755002940343",
+    "firebase_url": "https://agenteonline-26fd3.firebaseio.com",
+    "project_id": "agenteonline-26fd3",
+    "storage_bucket": "agenteonline-26fd3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755002940343:android:578b23c961b20cff",
+        "android_client_info": {
+          "package_name": "com.pixelbitperu.agenteonline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "755002940343-ql5l1nrac33c717e2tk65sne5bmmli9i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pixelbitperu.agenteonline",
+            "certificate_hash": "27f08206e6ac87fc151b00aced532ebb1129fb98"
+          }
+        },
+        {
+          "client_id": "755002940343-m0vls7ie1u4v29rmuq50d4cvjk777q73.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLsZr5NStPDRnswFk6OITWtFJDMSs0g_Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "755002940343-m0vls7ie1u4v29rmuq50d4cvjk777q73.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
