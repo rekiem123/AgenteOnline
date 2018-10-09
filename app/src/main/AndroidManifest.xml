@@ -26,8 +26,7 @@
             android:label="@string/title_activity_registros"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".NuevoRegistroActivity"
-            android:label="@string/title_activity_nuevos_registros"
-            ></activity>
+            android:label="@string/title_activity_nuevos_registros"></activity>
     </application>
 
 </manifest>
