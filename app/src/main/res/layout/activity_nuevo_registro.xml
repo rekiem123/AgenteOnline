@@ -106,6 +106,8 @@
         </LinearLayout>
 
         <Spinner
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
             android:id="@+id/spTipoProducto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></Spinner>
@@ -117,6 +119,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/ivFoto"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:background="@drawable/ic_camera" />
@@ -131,7 +134,12 @@
         </LinearLayout>
 
 
-
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_marginTop="20dp"
+            android:text="Guardar registro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

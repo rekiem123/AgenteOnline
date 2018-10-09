@@ -15,13 +15,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.Manifest;
+import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,6 +55,38 @@ public class NuevoRegistroActivity extends AppCompatActivity {
 
         mensaje1 = findViewById(R.id.mensaje1);
         mensaje2 = findViewById(R.id.mensaje2);
+
+        //Lista para spTipoProducto
+        ArrayList<String> comboTipoProducto  = new ArrayList<String>();
+        comboTipoProducto.add("Seleccione");
+        comboTipoProducto.add("Préstamo Empredor");
+        comboTipoProducto.add("Préstamo Mype");
+        comboTipoProducto.add("Préstamos RUS");
+        comboTipoProducto.add("Tarjeta Multibeneficios");
+        comboTipoProducto.add("Cuenta de ahorro");
+        comboTipoProducto.add("Seguro Vida y Salud");
+
+
+        //Cargando el adapter
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,comboTipoProducto);
+        spTipoProducto.setAdapter(adapter);
+
+        //Seteando lista en el adapter Spinner
+        spTipoProducto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(NuevoRegistroActivity.this, "Seleccion"+parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
 
         progressDialog = new ProgressDialog(this);
 
