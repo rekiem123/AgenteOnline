@@ -2,20 +2,27 @@ package com.pixelbitperu.agenteonline.objetos;
 
 public class Usuarios {
 
+    Integer dni;
     String email;
     String nombre;
     String apellido;
     String contrasena;
 
 
-    public Usuarios() {
-    }
-
-    public Usuarios(String email, String nombre, String apellido, String contrasena) {
+    public Usuarios(Integer dni, String email, String nombre, String apellido, String contrasena) {
+        this.dni = dni;
         this.email = email;
         this.nombre = nombre;
         this.apellido = apellido;
         this.contrasena = contrasena;
+    }
+
+    public Integer getDni() {
+        return dni;
+    }
+
+    public void setDni(Integer dni) {
+        this.dni = dni;
     }
 
     public String getEmail() {
