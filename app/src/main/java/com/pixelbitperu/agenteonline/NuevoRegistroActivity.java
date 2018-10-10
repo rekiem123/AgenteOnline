@@ -58,7 +58,7 @@ public class NuevoRegistroActivity extends AppCompatActivity {
 
         //Lista para spTipoProducto
         ArrayList<String> comboTipoProducto  = new ArrayList<String>();
-        comboTipoProducto.add("Seleccione");
+        comboTipoProducto.add(" Seleccione un Producto ");
         comboTipoProducto.add("Préstamo Empredor");
         comboTipoProducto.add("Préstamo Mype");
         comboTipoProducto.add("Préstamos RUS");
@@ -75,17 +75,14 @@ public class NuevoRegistroActivity extends AppCompatActivity {
         spTipoProducto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(NuevoRegistroActivity.this, "Seleccion"+parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(NuevoRegistroActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                Toast.makeText(NuevoRegistroActivity.this, "Debe seleccionar un producto", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
 
 
         progressDialog = new ProgressDialog(this);
@@ -113,7 +110,7 @@ public class NuevoRegistroActivity extends AppCompatActivity {
         }
         mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (LocationListener) Local);
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) Local);
-        mensaje1.setText("Localización agregada");
+        mensaje1.setText("Buscando satélites GPS....");
         mensaje2.setText("");
     }
 
