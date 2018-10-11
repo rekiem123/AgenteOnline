@@ -126,7 +126,7 @@ public class NuevoRegistroActivity extends AppCompatActivity {
     }
 
     private void cargarDialogoRecomendacion() {
-        
+
     }
 
     private void locationStart() {
