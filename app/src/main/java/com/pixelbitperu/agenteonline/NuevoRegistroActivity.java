@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class NuevoRegistroActivity extends AppCompatActivity {
 
@@ -55,6 +59,14 @@ public class NuevoRegistroActivity extends AppCompatActivity {
 
         mensaje1 = findViewById(R.id.mensaje1);
         mensaje2 = findViewById(R.id.mensaje2);
+
+        //validando permisos para CAMARA para android 6 en adelante
+        if (validarPermisosFoto()){
+            btnFoto.setEnabled(true);
+        }else {
+            btnFoto.setEnabled(false);
+        }
+
 
         //Lista para spTipoProducto
         ArrayList<String> comboTipoProducto  = new ArrayList<String>();
@@ -93,6 +105,28 @@ public class NuevoRegistroActivity extends AppCompatActivity {
         } else {
             locationStart();
         }
+    }
+
+    private boolean validarPermisosFoto() {
+        //PRIMERO validamos la version Android en el dispositivo donde se ejecuta la aplicación
+        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M){
+            return true;
+        }
+        //SEGUNDO validamos ahora los permisos de CAMARA Y ESCRITURA EN MEMORIA
+        if ((checkSelfPermission(CAMERA)==PackageManager.PERMISSION_GRANTED)&&(checkSelfPermission(WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)){
+            return true;
+        }
+        //validando si la version de android es correcta, pero no se dieron los permisos
+        if((shouldShowRequestPermissionRationale(CAMERA))||(shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE))){
+
+            cargarDialogoRecomendacion();
+        }
+
+        return false;
+    }
+
+    private void cargarDialogoRecomendacion() {
+        
     }
 
     private void locationStart() {

@@ -17,9 +17,6 @@ public class Clientes {
     String direccionAutomatica;
     String fotoID;
 
-    public Clientes() {
-
-    }
 
     public Clientes(String registroID, String dni, String apellidoPaterno, String apellidoMaterno, String nombres, String razonSocial,String tipoProducto,
                             String direccionFormulario, String latitud, String longitud, String direccionAutomatica, String fotoID) {
