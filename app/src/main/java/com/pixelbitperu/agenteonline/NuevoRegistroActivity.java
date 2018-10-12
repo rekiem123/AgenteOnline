@@ -1,7 +1,9 @@
 package com.pixelbitperu.agenteonline;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -12,6 +14,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,12 +63,12 @@ public class NuevoRegistroActivity extends AppCompatActivity {
         mensaje1 = findViewById(R.id.mensaje1);
         mensaje2 = findViewById(R.id.mensaje2);
 
-        //validando permisos para CAMARA para android 6 en adelante
-        if (validarPermisosFoto()){
-            btnFoto.setEnabled(true);
-        }else {
-            btnFoto.setEnabled(false);
-        }
+//        //validando permisos para CAMARA para android 6 en adelante
+//        if (validarPermisosFoto()){
+//            btnFoto.setEnabled(true);
+//        }else {
+//            btnFoto.setEnabled(false);
+//        }
 
 
         //Lista para spTipoProducto
@@ -107,27 +110,42 @@ public class NuevoRegistroActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validarPermisosFoto() {
-        //PRIMERO validamos la version Android en el dispositivo donde se ejecuta la aplicación
-        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M){
-            return true;
-        }
-        //SEGUNDO validamos ahora los permisos de CAMARA Y ESCRITURA EN MEMORIA
-        if ((checkSelfPermission(CAMERA)==PackageManager.PERMISSION_GRANTED)&&(checkSelfPermission(WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)){
-            return true;
-        }
-        //validando si la version de android es correcta, pero no se dieron los permisos
-        if((shouldShowRequestPermissionRationale(CAMERA))||(shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE))){
+//    private boolean validarPermisosFoto() {
+//        //PRIMERO validamos la version Android en el dispositivo donde se ejecuta la aplicación
+//        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M){
+//            return true;
+//        }
+//        //SEGUNDO validamos ahora los permisos de CAMARA Y ESCRITURA EN MEMORIA
+//        if ((checkSelfPermission(CAMERA)==PackageManager.PERMISSION_GRANTED)&&(checkSelfPermission(WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)){
+//            return true;
+//        }
+//        //validando si la version de android es correcta, pero no se dieron los permisos
+//        if((shouldShowRequestPermissionRationale(CAMERA))||(shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE))){
+//
+//            cargarDialogoRecomendacion();
+//        }else {
+//            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE,CAMERA},100);
+//        }
+//
+//        return false;
+//    }
 
-            cargarDialogoRecomendacion();
-        }
 
-        return false;
-    }
 
-    private void cargarDialogoRecomendacion() {
-
-    }
+//    private void cargarDialogoRecomendacion() {
+//        AlertDialog.Builder dialogo = new AlertDialog.Builder(NuevoRegistroActivity.this);
+//        dialogo.setTitle("Permisos Desactivados");
+//        dialogo.setMessage("Debe aceptar los permisos para el correcto funcionamiento de la App");
+//
+//        dialogo.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE,CAMERA},100);
+//            }
+//        });
+//        dialogo.show();
+//
+//    }
 
     private void locationStart() {
         LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -149,6 +167,10 @@ public class NuevoRegistroActivity extends AppCompatActivity {
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions,grantResults);
+
+
+
         if (requestCode == 1000) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 locationStart();
@@ -226,5 +248,16 @@ public class NuevoRegistroActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        btnFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NuevoRegistroActivity.this, CamaraActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 }
