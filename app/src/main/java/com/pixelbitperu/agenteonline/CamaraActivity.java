@@ -15,25 +15,19 @@ import android.widget.ImageView;
 
 import android.Manifest;
 
-public class CamaraActivity extends AppCompatActivity {
-
+public class CamaraActivity extends AppCompatActivity implements View.OnClickListener {
     Button btn;
     ImageView imagen;
     Intent i;
     final static int cons =0;
     Bitmap bmp;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camara);checkCameraPermission();
+        setContentView(R.layout.activity_camara);
+        checkCameraPermission();
         init();
     }
-    public void init(){
-        btn = (Button)findViewById(R.id.btnCaptura);
-        btn.setOnClickListener(this);
-        imagen = (ImageView)findViewById(R.id.imagen);
-    }
+
     private void checkCameraPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(
                 this, Manifest.permission.CAMERA);
@@ -44,6 +38,13 @@ public class CamaraActivity extends AppCompatActivity {
             Log.i("Mensaje", "Tienes permiso para usar la camara.");
         }
     }
+
+    public void init(){
+        btn = (Button)findViewById(R.id.btnCaptura);
+        btn.setOnClickListener(this);
+        imagen = (ImageView)findViewById(R.id.imagen);
+    }
+
     public void onClick(View v){
         int id;
         id=v.getId();
@@ -54,14 +55,16 @@ public class CamaraActivity extends AppCompatActivity {
                 break;
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        if (resultCode== Activity.RESULT_OK){
+        if (resultCode==Activity.RESULT_OK){
             Bundle ext = data.getExtras();
             bmp = (Bitmap)ext.get("data");
             imagen.setImageBitmap(bmp);
         }
     }
+
 
 }
