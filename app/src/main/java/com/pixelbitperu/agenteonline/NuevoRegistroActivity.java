@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.nfc.Tag;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,11 +37,13 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.pixelbitperu.agenteonline.objetos.Clientes;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 
 
 import static android.Manifest.permission.CAMERA;
@@ -49,12 +53,16 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
 
     private EditText txtDNI, txtApePat, txtApeMat, txtNombre, txtRazonSocial, txtDireccion;
     private Spinner spTipoProducto;
-    private Button btnFoto;
+    private Button btnFoto,btnGuardar;
 
 
     private ProgressDialog progressDialog;
 
-    private TextView mensaje1, mensaje2;
+    public String mensajeGPS,direccion,latitudCapturada,longitudCapturada;;
+
+//    public double latitud,longitud;
+
+//    private TextView mensaje1, mensaje2;
 
     //*CAM
     private ImageView ivFoto;
@@ -66,7 +74,7 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
     private TextView txtLatitud, txtLongitud;
 
     //RealTimeDataBase
-    private DatabaseReference referenceDataBase;
+    private DatabaseReference Clientes;
 
 
     @Override
@@ -83,17 +91,18 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
         txtRazonSocial = findViewById(R.id.txtRazonSocial);
         txtDireccion = findViewById(R.id.txtDireccion);
 
-        mensaje1 = findViewById(R.id.mensaje1);
-        mensaje2 = findViewById(R.id.mensaje2);
+//        mensaje1 = findViewById(R.id.mensaje1);
+//        mensaje2 = findViewById(R.id.mensaje2);
 
         txtLatitud = findViewById(R.id.txtLatitud);
         txtLongitud = findViewById(R.id.txtLongitud);
 
+        btnGuardar = findViewById(R.id.btnGuardar);
+
         //RealTimedataBase
-        referenceDataBase = FirebaseDatabase.getInstance().getReference();
+        Clientes = FirebaseDatabase.getInstance().getReference();
 
         //*CAM
-
         checkCameraPermission();
         init();
 
@@ -124,7 +133,7 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
         spTipoProducto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(NuevoRegistroActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(NuevoRegistroActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -214,8 +223,12 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
         }
         mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (LocationListener) Local);
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) Local);
-        mensaje1.setText("Buscando satélites GPS....");
-        mensaje2.setText("");
+
+//        mensaje1.setText("Buscando satélites GPS....");
+//        mensaje2.setText("");
+
+//        mensaje1=("Buscando satélites GPS....");
+        direccion=("");
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -239,7 +252,9 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
                         loc.getLatitude(), loc.getLongitude(), 1);
                 if (!list.isEmpty()) {
                     Address DirCalle = list.get(0);
-                    mensaje2.setText("Mi direccion es: \n" + DirCalle.getAddressLine(0));
+//                    mensaje2.setText("Mi direccion es: \n" + DirCalle.getAddressLine(0));
+
+                    direccion=(DirCalle.getAddressLine(0));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -270,22 +285,31 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
             // debido a la deteccion de un cambio de ubicacion
             loc.getLatitude();
             loc.getLongitude();
-            String Text = "Mi ubicacion actual es: " + "\n Lat = "
-                    + loc.getLatitude() + "\n Long = " + loc.getLongitude();
-            mensaje1.setText(Text);
+            String Latitud = ""+loc.getLatitude();
+            String Longitud = ""+loc.getLongitude();
+//            mensaje1.setText(Text);
+
+            latitudCapturada=(Latitud);
+            longitudCapturada=(Longitud);
             this.nuevoRegistroActivity.setLocation(loc);
         }
 
         @Override
         public void onProviderDisabled(String provider) {
             // Este metodo se ejecuta cuando el GPS es desactivado
-            mensaje1.setText("GPS Desactivado");
+//            mensaje1.setText("GPS Desactivado");
+            Toast.makeText(nuevoRegistroActivity, "GPS Desactivado", Toast.LENGTH_SHORT).show();
+//            mensajeGPS=("GPS Desactivado");
         }
 
         @Override
         public void onProviderEnabled(String provider) {
             // Este metodo se ejecuta cuando el GPS es activado
-            mensaje1.setText("GPS Activado");
+//            mensaje1.setText("GPS Activado");
+
+            Toast.makeText(nuevoRegistroActivity, "GPS Activado", Toast.LENGTH_SHORT).show();
+
+//            mensajeGPS=("GPS Activado");
         }
 
         @Override
@@ -331,6 +355,16 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
     protected void onResume() {
         super.onResume();
 
+        btnGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                registrarCliente();
+
+            }
+        });
+
 
     }
 
@@ -343,14 +377,29 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
         String direccionFormulario = txtDireccion.getText().toString();
         String tipoProduco = spTipoProducto.getSelectedItem().toString();
 
-        String latitud = mensaje1.getText().toString();
-        String longitud = mensaje2.getText().toString();
+        String latitud = latitudCapturada.toString();
+        String longitud = longitudCapturada.toString();
+        String direccionAutomatica = direccion.toString();
+        String fotoID = txtDNI.getText().toString();
+        
+        if(!TextUtils.isEmpty(dni)){
+            
+            String clienteID = Clientes.push().getKey();
+            Clientes clientes = new Clientes(clienteID,dni,apePat,apeMat,nombre,razonSocial,direccionFormulario,
+                    tipoProduco,latitud,longitud,direccionAutomatica,fotoID);
+            Clientes.child("Clientes").child(clienteID).setValue(clientes);
 
+            Toast.makeText(this, "Cliente Registrado", Toast.LENGTH_SHORT).show();
+        }else {
+            txtLatitud.setText(latitudCapturada.toString());
+            txtLongitud.setText(longitudCapturada.toString());
 
-        txtLatitud.setText((CharSequence) mensaje1);
-        txtLongitud.setText((CharSequence) mensaje2);
+            Toast.makeText(this, "De ingresar un DNI", Toast.LENGTH_SHORT).show();
+            
+        }
 
-
+        
+        
 
 
 
