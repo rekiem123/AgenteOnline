@@ -15,12 +15,12 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/mensaje1"
+            android:id="@+id/txtLatitud"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/mensaje2"
+            android:id="@+id/txtLongitud"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -33,7 +33,7 @@
                 android:text="DNI:"
                 android:textSize="18sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />s
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/txtDNI"
@@ -45,6 +45,8 @@
 
 
         </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,6 +108,48 @@
                 />
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="Razon Social:"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/txtRazonSocial"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Dirección:"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/txtDireccion"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_marginTop="5dp"
@@ -138,8 +182,7 @@
             <ImageView
                 android:id="@+id/ivFoto"
                 android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/ic_camera" />
+                android:layout_height="60dp" />
 
             <Button
                 android:id="@+id/btnFoto"

@@ -1,11 +1,13 @@
 package com.pixelbitperu.agenteonline;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -16,6 +18,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,28 +27,46 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.Manifest;
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class NuevoRegistroActivity extends AppCompatActivity {
+public class NuevoRegistroActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText txtDNI, txtApePat, txtApeMat, txtNombre;
+    private EditText txtDNI, txtApePat, txtApeMat, txtNombre, txtRazonSocial, txtDireccion;
     private Spinner spTipoProducto;
     private Button btnFoto;
+
 
     private ProgressDialog progressDialog;
 
     private TextView mensaje1, mensaje2;
+
+    //*CAM
+    private ImageView ivFoto;
+    Intent i;
+    final static int cons = 0;
+    Bitmap fotoCapturada;
+
+    //Variables de seteo de coordenadas
+    private TextView txtLatitud, txtLongitud;
+
+    //RealTimeDataBase
+    private DatabaseReference referenceDataBase;
 
 
     @Override
@@ -58,10 +79,23 @@ public class NuevoRegistroActivity extends AppCompatActivity {
         txtApeMat = findViewById(R.id.txtApeMat);
         txtNombre = findViewById(R.id.txtNombre);
         spTipoProducto = findViewById(R.id.spTipoProducto);
-        btnFoto = findViewById(R.id.btnFoto);
+//        btnFoto = findViewById(R.id.btnFoto);
+        txtRazonSocial = findViewById(R.id.txtRazonSocial);
+        txtDireccion = findViewById(R.id.txtDireccion);
 
         mensaje1 = findViewById(R.id.mensaje1);
         mensaje2 = findViewById(R.id.mensaje2);
+
+        txtLatitud = findViewById(R.id.txtLatitud);
+        txtLongitud = findViewById(R.id.txtLongitud);
+
+        //RealTimedataBase
+        referenceDataBase = FirebaseDatabase.getInstance().getReference();
+
+        //*CAM
+
+        checkCameraPermission();
+        init();
 
 //        //validando permisos para CAMARA para android 6 en adelante
 //        if (validarPermisosFoto()){
@@ -72,7 +106,7 @@ public class NuevoRegistroActivity extends AppCompatActivity {
 
 
         //Lista para spTipoProducto
-        ArrayList<String> comboTipoProducto  = new ArrayList<String>();
+        ArrayList<String> comboTipoProducto = new ArrayList<String>();
         comboTipoProducto.add(" Seleccione un Producto ");
         comboTipoProducto.add("Préstamo Empredor");
         comboTipoProducto.add("Préstamo Mype");
@@ -83,7 +117,7 @@ public class NuevoRegistroActivity extends AppCompatActivity {
 
 
         //Cargando el adapter
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,comboTipoProducto);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, comboTipoProducto);
         spTipoProducto.setAdapter(adapter);
 
         //Seteando lista en el adapter Spinner
@@ -95,7 +129,7 @@ public class NuevoRegistroActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(NuevoRegistroActivity.this, "Debe seleccionar un producto", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -108,6 +142,25 @@ public class NuevoRegistroActivity extends AppCompatActivity {
         } else {
             locationStart();
         }
+    }
+
+
+    //*CAM
+    private void checkCameraPermission() {
+        int permissionCheck = ContextCompat.checkSelfPermission(
+                this, Manifest.permission.CAMERA);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            Log.i("Mensaje", "No se tiene permiso para la camara!.");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 225);
+        } else {
+            Log.i("Mensaje", "Tienes permiso para usar la camara.");
+        }
+    }
+
+    public void init() {
+        btnFoto = findViewById(R.id.btnFoto);
+        btnFoto.setOnClickListener(this);
+        ivFoto = findViewById(R.id.ivFoto);
     }
 
 //    private boolean validarPermisosFoto() {
@@ -129,7 +182,6 @@ public class NuevoRegistroActivity extends AppCompatActivity {
 //
 //        return false;
 //    }
-
 
 
 //    private void cargarDialogoRecomendacion() {
@@ -167,8 +219,7 @@ public class NuevoRegistroActivity extends AppCompatActivity {
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions,grantResults);
-
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
 
         if (requestCode == 1000) {
@@ -194,6 +245,11 @@ public class NuevoRegistroActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 
     /* Aqui empieza la Clase Localizacion */
@@ -248,16 +304,56 @@ public class NuevoRegistroActivity extends AppCompatActivity {
         }
     }
 
+    //CAM
+    public void onClick(View v) {
+        int id;
+        id = v.getId();
+        switch (id) {
+            case R.id.btnFoto:
+                i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(i, cons);
+                break;
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Bundle ext = data.getExtras();
+            fotoCapturada = (Bitmap) ext.get("data");
+            ivFoto.setImageBitmap(fotoCapturada);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
 
-        btnFoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NuevoRegistroActivity.this, CamaraActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
+
+    public void registrarCliente() {
+        String dni = txtDNI.getText().toString();
+        String apePat = txtApePat.getText().toString();
+        String apeMat = txtApeMat.getText().toString();
+        String nombre = txtNombre.getText().toString();
+        String razonSocial = txtRazonSocial.getText().toString();
+        String direccionFormulario = txtDireccion.getText().toString();
+        String tipoProduco = spTipoProducto.getSelectedItem().toString();
+
+        String latitud = mensaje1.getText().toString();
+        String longitud = mensaje2.getText().toString();
+
+
+        txtLatitud.setText((CharSequence) mensaje1);
+        txtLongitud.setText((CharSequence) mensaje2);
+
+
+
+
+
+    }
+
 }

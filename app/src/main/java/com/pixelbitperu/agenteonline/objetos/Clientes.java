@@ -3,7 +3,7 @@ package com.pixelbitperu.agenteonline.objetos;
 public class Clientes {
 
 
-    String registroID;
+    String clienteID;
     String dni;
     String apellidoPaterno;
     String apellidoMaterno;
@@ -11,17 +11,16 @@ public class Clientes {
     String razonSocial;
     String tipoProducto;
     String direccionFormulario;
-
     String latitud;
     String longitud;
     String direccionAutomatica;
     String fotoID;
 
 
-    public Clientes(String registroID, String dni, String apellidoPaterno, String apellidoMaterno, String nombres, String razonSocial,String tipoProducto,
+    public Clientes(String clienteID, String dni, String apellidoPaterno, String apellidoMaterno, String nombres, String razonSocial,String tipoProducto,
                             String direccionFormulario, String latitud, String longitud, String direccionAutomatica, String fotoID) {
 
-        this.registroID = registroID;
+        this.clienteID = clienteID;
         this.dni = dni;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -86,12 +85,12 @@ public class Clientes {
         this.direccionAutomatica = direccionAutomatica;
     }
 
-    public String getRegistroID() {
-        return registroID;
+    public String getClienteID() {
+        return clienteID;
     }
 
-    public void setRegistroID(String registroID) {
-        this.registroID = registroID;
+    public void setClienteID(String clienteID) {
+        this.clienteID = clienteID;
     }
 
     public String getDni() {

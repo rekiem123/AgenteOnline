@@ -56,15 +56,7 @@ public class CamaraActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        if (resultCode==Activity.RESULT_OK){
-            Bundle ext = data.getExtras();
-            bmp = (Bitmap)ext.get("data");
-            imagen.setImageBitmap(bmp);
-        }
-    }
+
 
 
 }
