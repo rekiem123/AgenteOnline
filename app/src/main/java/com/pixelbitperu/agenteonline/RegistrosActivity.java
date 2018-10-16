@@ -33,9 +33,6 @@ public class RegistrosActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Snackbar.make(v, "Cargado coordenadas", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
                 Intent intent = new Intent(RegistrosActivity.this,NuevoRegistroActivity.class);
                 startActivity(intent);
 
