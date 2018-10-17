@@ -375,7 +375,7 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
         String nombre = txtNombre.getText().toString();
         String razonSocial = txtRazonSocial.getText().toString();
         String direccionFormulario = txtDireccion.getText().toString();
-        String tipoProduco = spTipoProducto.getSelectedItem().toString();
+        String tipoProducto = spTipoProducto.getSelectedItem().toString();
 
         String latitud = latitudCapturada.toString();
         String longitud = longitudCapturada.toString();
@@ -385,8 +385,8 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
         if(!TextUtils.isEmpty(dni)){
             
             String clienteID = Clientes.push().getKey();
-            Clientes clientes = new Clientes(clienteID,dni,apePat,apeMat,nombre,razonSocial,direccionFormulario,
-                    tipoProduco,latitud,longitud,direccionAutomatica,fotoID);
+            Clientes clientes = new Clientes(clienteID,dni,apePat,apeMat,nombre,razonSocial,tipoProducto,
+                    direccionFormulario,latitud,longitud,direccionAutomatica,fotoID);
             Clientes.child("Clientes").child(clienteID).setValue(clientes);
 
             Toast.makeText(this, "Cliente Registrado", Toast.LENGTH_SHORT).show();
@@ -397,6 +397,8 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
             Toast.makeText(this, "De ingresar un DNI", Toast.LENGTH_SHORT).show();
             
         }
+
+        finish();
 
         
         
