@@ -369,6 +369,7 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
     }
 
     public void registrarCliente() {
+
         String dni = txtDNI.getText().toString();
         String apePat = txtApePat.getText().toString();
         String apeMat = txtApeMat.getText().toString();
@@ -390,20 +391,16 @@ public class NuevoRegistroActivity extends AppCompatActivity implements View.OnC
             Clientes.child("Clientes").child(clienteID).setValue(clientes);
 
             Toast.makeText(this, "Cliente Registrado", Toast.LENGTH_SHORT).show();
+
         }else {
             txtLatitud.setText(latitudCapturada.toString());
             txtLongitud.setText(longitudCapturada.toString());
 
             Toast.makeText(this, "De ingresar un DNI", Toast.LENGTH_SHORT).show();
-            
+
         }
 
         finish();
-
-        
-        
-
-
 
     }
 
