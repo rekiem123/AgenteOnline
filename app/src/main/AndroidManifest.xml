@@ -33,7 +33,10 @@
             android:name=".NuevoRegistroActivity"
             android:configChanges="screenSize|orientation"
             android:label="@string/title_activity_nuevos_registros" />
-        <activity android:name=".CamaraActivity"></activity>
+        <activity android:name=".CamaraActivity" />
+        <activity
+            android:name=".ResetearContraseniaActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

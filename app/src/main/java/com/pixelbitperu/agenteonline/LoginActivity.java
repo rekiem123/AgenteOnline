@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtEmail, txtContrasena;
     private Button btnIngresar;
     private ProgressDialog progressDialog;
+    private TextView lblResetearContrasenia;
 
     //Declaración de objeto firebaseAuth
     private FirebaseAuth mAuth;
@@ -42,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         txtEmail = findViewById(R.id.txtEmail);
         txtContrasena = findViewById(R.id.txtContrasena);
         btnIngresar = findViewById(R.id.btnIngresar);
+        lblResetearContrasenia = findViewById(R.id.lblResetearContrasenia);
 
         progressDialog = new ProgressDialog(this);
 
@@ -98,13 +101,17 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
         });
+
+        lblResetearContrasenia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,ResetearContraseniaActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
-
-
-
-
-
-
 
 
 }

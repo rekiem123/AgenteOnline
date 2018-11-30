@@ -76,7 +76,7 @@
                 android:text="¿Olvidó su contraseña? " />
 
             <TextView
-                android:id="@+id/lblResetearContrasena"
+                android:id="@+id/lblResetearContrasenia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Resetear contraseña"
@@ -94,22 +94,22 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="¿No tiene una cuenta aún? " />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="12sp"-->
+                <!--android:text="¿No tiene una cuenta aún? " />-->
 
 
 
-            <TextView
-                android:id="@+id/lblRegistrarse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Registrarse aquí"
-                android:textSize="12sp"
-                android:textColor="@color/accent"
-                android:textStyle="italic" />
+            <!--<TextView-->
+                <!--android:id="@+id/lblRegistrarse"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Registrarse aquí"-->
+                <!--android:textSize="12sp"-->
+                <!--android:textColor="@color/accent"-->
+                <!--android:textStyle="italic" />-->
 
 
         </LinearLayout>
